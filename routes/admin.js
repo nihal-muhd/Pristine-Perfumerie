@@ -2,8 +2,6 @@ var express = require('express');
 const { response, } = require('../app');
 var router = express.Router();
 const adminController = require('../controllers/adminControllers')
-const adminHelpers = require('../helpers/admin-helpers');
-const userHelpers = require('../helpers/user-helpers');
 const multer = require('multer')
 
 

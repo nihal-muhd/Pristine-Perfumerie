@@ -2,11 +2,7 @@ const { response } = require("express");
 var express = require("express");
 var router = express.Router();
 const userController = require('../controllers/userControllers');
-const productHelpers = require("../helpers/product-helpers");
 const userHelpers = require('../helpers/user-helpers')
-const cartHelpers = require('../helpers/cart-helpers');
-const twilioHelpers = require("../helpers/twilio-helpers");
-
 
 const verifyUser = (async (req, res, next) => {
   if (req.session.user) {
