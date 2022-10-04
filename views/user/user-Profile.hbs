@@ -1,0 +1,316 @@
+
+<section style="background-color: #eee;padding-top: 100px;">
+    <div class="container py-5 ">
+    
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                            alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3"></h5>
+                    </div>
+                </div>
+                <div class="card mb-4 mb-lg-0">
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush rounded-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                <button class="mb-0 btn btn-success" data-toggle="modal" data-target="#editProfile">Edit
+                                    Profile</button>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                <a class="mb-0 btn btn-success" href="/orders">View
+                                    Orders</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <i class="fa fa-address-book-o" aria-hidden="true"></i>
+                                <button class="mb-0 btn btn-success" data-toggle="modal" data-target="#addAddress">Add
+                                    Address</button>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                <button class="mb-0 btn btn-success" data-toggle="modal" data-target="">Change Password
+                                </button>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{user.Name}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{user.Email}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Phone</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{user.Phone}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                        {{#each user.Addresses}}
+                    <div class="col-md-6">
+                        <div class="card mb-4 mb-md-0">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"> {{this.Name}}</h5><BR>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{this.Phone}}</h6>
+                                    <p class="card-text">{{this.Building_Name}},{{this.Street_Name}}<br>{{this.City}},{{this.Pincode}}</p>
+                                    {{!-- <p class="card-text">{{this.Street_Name}},{{this.City}},{{this.Pincode}}</p> --}}
+
+
+
+                                    <button class="card-link btn btn-primary" data-id=""
+                                        onclick="editAddres('{{../user._id}}','{{this._addId}}')" data-toggle="modal"
+                                        data-target="#editAddress">Edit</button>
+                                    <a href="/delete-address/{{../user._id}}/{{this._addId}}"
+                                        class="card-link text-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="modal fade" id="editProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Edit Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/edit-profile/{{user._id}}" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name" aria-describedby="nameHelp"
+                            placeholder="Full Name" value="{{user.Name}}">
+                    </div>
+                    
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addAddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Add Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/add-address/{{user._id}}" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name" aria-describedby="nameHelp"
+                            placeholder="Full Name" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Phone</label>
+                        <input type="tel" class="form-control" id="Phone" name="Phone" aria-describedby="phoneHelp"
+                            placeholder="Phone number" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Building Name</label>
+                        <input type="text" class="form-control" id="Building_Name" name="Building_Name"
+                            aria-describedby="buildHelp" placeholder="Building Name" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Street Name</label>
+                        <input type="text" class="form-control" id="Street_Name" name="Street_Name"
+                            aria-describedby="streetHelp" placeholder="Street Name" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">City</label>
+                        <input type="text" class="form-control" id="City" name="City" aria-describedby="cityHelp"
+                            placeholder="City" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">District</label>
+                        <input type="text" class="form-control" id="District" name="District"
+                            aria-describedby="districtHelp" placeholder="District" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">State</label>
+                        <input type="text" class="form-control" id="State" name="State" aria-describedby="stateHelp"
+                            placeholder="State" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Pincode</label>
+                        <input type="number" class="form-control" id="Pincode" name="Pincode" aria-describedby="pinHelp"
+                            placeholder="Pincode" value="" required>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editAddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Edit Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="" id="editAddress-form">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Name</label>
+                        <input type="text" class="form-control" id="editName" name="Name" aria-describedby="nameHelp"
+                            placeholder="Full Name" value="" </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Phone</label>
+                            <input type="tel" class="form-control" id="editPhone" name="Phone"
+                                aria-describedby="phoneHelp" placeholder="Phone number" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Building Name</label>
+                            <input type="text" class="form-control" id="editBuilding_Name" name="Building_Name"
+                                aria-describedby="buildHelp" placeholder="Building Name" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Street Name</label>
+                            <input type="text" class="form-control" id="editStreet_Name" name="Street_Name"
+                                aria-describedby="streetHelp" placeholder="Street Name" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">City</label>
+                            <input type="text" class="form-control" id="editCity" name="City"
+                                aria-describedby="cityHelp" placeholder="City" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">District</label>
+                            <input type="text" class="form-control" id="editDistrict" name="District"
+                                aria-describedby="districtHelp" placeholder="District" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">State</label>
+                            <input type="text" class="form-control" id="editState" name="State"
+                                aria-describedby="stateHelp" placeholder="State" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Pincode</label>
+                            <input type="number" class="form-control" id="editPincode" name="Pincode"
+                                aria-describedby="pinHelp" placeholder="Pincode" value="">
+                        </div>
+                        <input type="text" class="form-control" id="userId" name="userId" aria-describedby="pinHelp"
+                            value="" hidden>
+                        <input type="text" class="form-control" id="addressId" name="addressId"
+                            aria-describedby="pinHelp" value="" hidden>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function editAddres(userId, addressId) {
+        console.log("second chance")
+        $.ajax({
+            url: '/get-edit-address',
+            data: {
+                userId: userId,
+                addressId: addressId
+            },
+            method: 'post',
+            success: (response) => {
+                if (response) {
+                    document.getElementById('editName').value = response.Addresses.Name;
+                    document.getElementById('editPhone').value = response.Addresses.Phone;
+                    document.getElementById('editBuilding_Name').value = response.Addresses.Building_Name;
+                    document.getElementById('editStreet_Name').value = response.Addresses.Street_Name;
+                    document.getElementById('editCity').value = response.Addresses.City;
+                    document.getElementById('editDistrict').value = response.Addresses.District;
+                    document.getElementById('editState').value = response.Addresses.State;
+                    document.getElementById('editPincode').value = response.Addresses.Pincode;
+                    document.getElementById('userId').value = response._id;
+                    document.getElementById('addressId').value = response.Addresses._addId;
+                }
+            }
+
+        })
+
+    }
+
+    $('#editAddress-form').submit((e) => {
+        e.preventDefault()
+
+        $.ajax({
+            url: '/post-edit-address',
+            method: 'post',
+            data: $('#editAddress-form').serialize(),
+            success: (response) => {
+                if (response.status) {
+                    alert("edited successfully")
+                    location.reload()
+                }
+            }
+        })
+    })
+
+
+</script>

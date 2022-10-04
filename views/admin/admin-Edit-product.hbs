@@ -1,0 +1,102 @@
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <strong>Edit Product </strong>
+        </div>
+        <div class="card-body card-block">
+            <form action="/admin/edit-product/{{proDetails._id}}" method="post" enctype="multipart/form-data"
+                class="form-horizontal">
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="text-input" class=" form-control-label">Product Name</label>
+                    </div>
+                    <div class="col-12 col-md-9"><input type="text" id="Pname" name="Pname" placeholder=""
+                            class="form-control" value="{{proDetails.Pname}}"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="text-input" class=" form-control-label">Brand Name</label>
+                    </div>
+                    <div class="col-12 col-md-9"><input type="text" id="Bname" name="Bname" placeholder=""
+                            class="form-control" value="{{proDetails.Bname}}"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="number-input" class=" form-control-label">Price</label></div>
+                    <div class="col-12 col-md-9"><input type="number" id="Price" name="Price" placeholder=""
+                            class="form-control" value="{{proDetails.Price}}"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="number-input" class=" form-control-label">Size</label></div>
+                    <div class="col-12 col-md-9"><input type="number" id="Size" name="Size" placeholder=""
+                            class="form-control" value="{{proDetails.Size}}"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="number-input" class=" form-control-label">Quantity</label>
+                    </div>
+                    <div class="col-12 col-md-9"><input type="number" id="Quantity" name="Quantity" placeholder=""
+                            class="form-control" value="{{proDetails.Quantity}}"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="textarea-input"
+                            class=" form-control-label">Description</label></div>
+                    <div class="col-12 col-md-9"><textarea name="Description" id="Description" rows="9" placeholder=""
+                            class="form-control">{{proDetails.Description}}</textarea></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="select" class=" form-control-label">Category</label></div>
+                    <div class="col-12 col-md-9">
+                        <select name="Category" id="Category" class="form-control">
+                            {{#each catDetails}}
+                            <option {{#if this.flag}} selected {{/if}} value="{{this.CategoryName}}">
+                                {{this.CategoryName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="file-input" class=" form-control-label">Choose Image</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <div>
+                            <label for="Imageid" id="image-div"><i class="fa fa-plus" aria-hidden="true"
+                                    style="font-size:45px; border:1px solid black;padding:25px;cursor:pointer"></i></label>
+                            <input type="file" id="Imageid" name="Image" class="form-control-file"
+                                style="display:none;visibility:none;" onchange="viewImage(event)"
+                                accept="image/jpg,image/jpeg" multiple>
+
+                            <img id="image-show-0" src="/admin/product-Images/{{proDetails.Image.[0]}}" alt=""
+                                style="width:100px ;height:auto;">
+                            <img id="image-show-1" src="/admin/product-Images/{{proDetails.Image.[1]}}" alt=""
+                                style="width:100px ;height:auto;">
+                            <img id="image-show-2" src="/admin/product-Images/{{proDetails.Image.[2]}}" alt=""
+                                style="width:100px ;height:auto;">
+
+                        </div>
+
+                    </div>
+
+
+
+
+                </div>
+                <div class="row form-group">
+                    <button type="submit" class="btn btn-primary ">
+                        <i class="fa fa-dot-circle-o"></i> Submit
+                    </button>
+                    <button type="reset" class="btn btn-danger">
+                        <i class="fa fa-ban"></i> Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function viewImage(event) {
+        let leng = event.target.files.length
+        console.log(leng)
+        for (let i = 0; i < leng; i++) {
+            document.getElementById('image-show-' + [i]).src = URL.createObjectURL(event.target.files[i])
+        }
+
+    }
+</script>

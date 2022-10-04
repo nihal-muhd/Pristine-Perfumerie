@@ -1,0 +1,65 @@
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+	<div class="container">
+		<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+			<div class="col-first">
+				<h1>Register</h1>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End Banner Area -->
+<!--================Box Area =================-->
+<section class="login_box_area section_gap">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="login_form_inner">
+					<h3>Enter Otp</h3>
+					<form class="row login_form" action="/otp" method="post" id="contactForm">
+						<div class="col-md-12 form-group">
+							<input type="number" class="form-control" id="otp" name="otp" placeholder="otp"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" value=""
+								onkeyup="validateOtp()" autocomplete="off">
+							<span id="otp-error" class="text-danger font-weight-bold"></span>
+						</div>
+						<div class="col-md-12 form-group">
+							<button type="submit" value="submit" class="primary-btn"
+								onclick="return validateForm()">Submit</button>
+							<span id="submit-error" class="text-danger font-weight-bold"></span>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--================End  Box Area =================-->
+
+
+<script>
+	var otpError = document.getElementById('otp-error');
+	var submitError = document.getElementById('submit-error');
+
+	function validateOtp() {
+		var otp = document.getElementById('otp').value;
+
+		if (otp.length == 0) {
+        otpError.innerHTML = '**Otp is required';
+        return false
+
+		if (otp.length != 6) {
+        otpError.innerHTML = '**Invalid otp';
+        return false
+    }
+
+	function validateForm() {
+    if (!validateOtp()) {
+        submitError.style.display = 'block'
+        submitError.innerHTML = 'Please enter the Otp';
+        setTimeout(function () { submitError.style.display = 'none' }, 2000)
+        return false;
+    }
+}
+
+</script>

@@ -1,0 +1,107 @@
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <strong>Add Product </strong>
+        </div>
+        <div class="card-body card-block">
+            <form action="/admin/add-product" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="text-input" class=" form-control-label">Product Name</label>
+                    </div>
+                    <div class="col-12 col-md-9"><input type="text" id="Pname" name="Pname" placeholder=""
+                            class="form-control" required autocomplete="off"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="text-input" class=" form-control-label">Brand Name</label>
+                    </div>
+                    <div class="col-12 col-md-9"><input type="text" id="Bname" name="Bname" placeholder=""
+                            class="form-control" required autocomplete="off"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="number-input" class=" form-control-label">Price</label></div>
+                    <div class="col-12 col-md-9"><input type="number" id="Price" name="Price" placeholder=""
+                            class="form-control" required autocomplete="off"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="number-input" class=" form-control-label">Quantity</label>
+                    </div>
+                    <div class="col-12 col-md-9"><input type="number" id="Quantity" name="Quantity" placeholder=""
+                            class="form-control" required autocomplete="off"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="textarea-input"
+                            class=" form-control-label">Description</label></div>
+                    <div class="col-12 col-md-9"><textarea name="Description" id="Description" rows="9" placeholder=""
+                            class="form-control" required autocomplete="off"></textarea></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="select" class=" form-control-label">Category</label></div>
+                    <div class="col-12 col-md-9">
+
+                        <select name="Category" id="Category" class="form-control" required>
+                            {{#each catDetails}}
+                            <option value="{{this.CategoryName}}">{{this.CategoryName}}</option>
+                            {{/each}}
+                        </select>
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="file-input" class=" form-control-label">Choose Image</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <div>
+                            <label for="Imageid" id="image-div"><i class="fa fa-plus" aria-hidden="true"
+                                    style="font-size:45px; border:1px solid black;padding:25px;cursor:pointer"></i></label>
+                            <input type="file" id="Imageid" name="Image" class="form-control-file"
+                                style="display:none;visibility:none;" onchange="getImage(event)"
+                                accept="image/jpg,image/jpeg" multiple required>
+
+                            <img id="image-show-0" src="" alt="" style="width:100px ;height:auto;">
+                            <img id="image-show-1" src="" alt="" style="width:100px ;height:auto;">
+                            <img id="image-show-2" src="" alt="" style="width:100px ;height:auto;">
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <button type="submit" class="btn btn-primary ">
+                        <i class="fa fa-dot-circle-o"></i> Submit
+                    </button>
+                    <button type="reset" class="btn btn-danger">
+                        <i class="fa fa-ban"></i> Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function getImage(event) {
+        let inputDiv = document.getElementById('image-div')  // This is given for when we add images upto limit we dont need to display the option for adding image. In below we are displaying it none
+        if (event.target.files && event.target.files[0]) {
+            console.log(event.target.files) //There will a be a Filelist. It contains 'FileList {0: File, 1: File, length: 2}' and also there is a details of images too like lastmodified,date etc
+            let leng = event.target.files.length
+            console.log(leng)
+            if (leng > 3) {
+                document.getElementById('Imageid').value = null //This is given, if we select images more than the limit value inside ImageId should be 
+                alert('3 pictures are allowed')
+            } else {
+
+                for (let i = 0; i < leng; i++) {
+                    if (i == 2) {
+                        inputDiv.style.display = 'none'
+                    }
+                    let one = document.getElementById('image-show-' + [i]) //Used to show image according to image tag
+                    one.style.display = 'inline'
+                    one.src = URL.createObjectURL(event.target.files[i]) //Used to get the image using the image url
+
+                }
+            }
+        }
+
+    }
+</script>

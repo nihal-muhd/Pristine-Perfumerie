@@ -1,0 +1,117 @@
+<section class="cart_area" style="margin-top: 5rem ;">
+    <div class="container">
+        <div class="cart_inner">
+            <div class="table-responsive">
+                <table class="table">
+                    {{#if products}}
+                    <thead>
+                        <tr>
+                            <th scope="col">Item</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Product Total</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {{#each products}}
+                        <tr>
+                            <td>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <img src="/admin/product-Images/{{this.product.Image.[0]}}" alt=""
+                                            style="width:100px ;height:100px ;">
+                                    </div>
+                                    <div class="media-body">
+                                        <p>{{this.product.Pname}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <h5>Rs.{{this.product.Price}}</h5>
+                            </td>
+                            <td>
+                                <div class="product_count" id="kkk">
+
+                                    <input type="text" name="qty" id="{{this.product._id}}" maxlength="12"
+                                        value="{{this.quantity}}" title="Quantity:" class="input-text qty">
+                                    <button
+                                        onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userDetails._id}}',1)"
+                                        class="increase items-count" type="button"><i
+                                            class="lnr lnr-chevron-up"></i></button>
+                                    <button
+                                        onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userDetails._id}}',-1)"
+                                        class="reduced items-count" type="button"><i
+                                            class="lnr lnr-chevron-down"></i></button>
+
+                                </div>
+                            </td>
+                            <td>
+                                <h5>Rs.<span id="proTotal{{this.product._id}}">{{this.proTotal}}</span></h5>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-danger"
+                                    onclick="productRemove('{{this._id}}','{{this.product._id}}')">Remove</button>
+                            </td>
+                        </tr>
+                        {{/each}}
+
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                <h5>Total</h5><br>
+                            </td>
+                            <td>
+                                <h5>Rs.<span id="subTotal">{{Total.total}}</span></h5><br>
+
+                            </td>
+                        </tr>
+                        <tr class="out_button_area">
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                <div class="checkout_btn_inner d-flex align-items-center">
+                                    <a class="gray_btn" href="/shop">Continue Shopping</a>
+                                    <a class="primary-btn" href="/place-order">Place Order</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    {{else}}
+                    <div class="text-center">
+                        <img src="/user/img/new cart.png" alt="" style="margin-top:5rem ;">
+                        <div>
+                      <p class="text-center mt-3 ml-5"> <a href="/shopAll" class="btn btn-primary" >Add items to cart</a></p> 
+                        </div>
+                    </div>
+                    {{/if}}
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Cart Area =================-->
+
+
+
+<script src="/javascripts/cart.js"> </script>

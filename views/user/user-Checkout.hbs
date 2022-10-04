@@ -1,0 +1,356 @@
+
+<!--================Checkout Area =================-->
+<section class="checkout_area section_gap" style="margin-top: 5rem ;">
+    <div class="container">
+        <div class="cupon_area">
+            <div class="check_title">
+                <h2>Have a coupon? </h2>
+            </div>
+            <input type="text" placeholder="Enter coupon code" id="coupon">
+            <button class="tp_btn" onclick="applyCoupon()">Apply Coupon</button>
+        </div>
+
+
+        <div class="billing_details">
+            <form class="row contact_form" action="" method="" id="checkout-form">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3>Shipping Address</h3>
+
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="AddrName" name="Name" placeholder="Name"
+                                value="" required>
+
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="number" class="form-control" id="AddrPhone" name="Phone"
+                                placeholder="Phone Number" required>
+
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="AddrBuidlingName" name="Buidling_Name"
+                                placeholder="Buidling Name" required>
+
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="AddrStreetName" name="Street_Name"
+                                placeholder="Street Name" required>
+
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="AddrCity" name="City" placeholder="City"
+                                required>
+
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="AddrDistrict" name="District"
+                                placeholder="District" required>
+
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="AddrState" name="State" placeholder="State"
+                                required>
+
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="number" class="form-control" id="AddrPincode" name="Pincode"
+                                placeholder="Pincode" required>
+                        </div>
+
+                        <input type="text" name="userId" id="hiddenUserId" value="{{userDetails._id}}" hidden>
+
+                        <input type="text" name="discount" id="offer" value="0" hidden>
+                        <input type="text" name="grandTotal" id="finalprice" value="{{Total.total}}" hidden>
+
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="order_box">
+                            <h2 id="">Your Order</h2>
+
+                            <ul class="list">
+                                <li><a href="#">Product <span>Total</span></a></li>
+                                {{#each products}}
+                                <li><a href="#">{{this.product.Bname}} <span class="middle">x {{this.quantity}}</span>
+                                        <span class="last">{{this.proTotal}}</span></a></li>
+                                {{/each}}
+                            </ul>
+
+                            <ul class="list list_2">
+                                {{!-- <li><a href="#">Subtotal <span>$2160.00</span></a></li>
+                                <li><a href="#">Shipping <span>Flat rate: $50.00</span></a></li> --}}
+                                <li><a href="#">Sub-Total <span id="subTotal">{{Total.total}}</span></a></li>
+                                <li><a href="#">Discount <span id="discount"></span></a></li>
+                                <li><a href="#">Grand Total <span id="grandTotal">{{Total.total}}</span></a></li>
+                            </ul>
+                            <div class="payment_item">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option5" name="Payment_method" value="COD">
+                                    <label for="f-option5">Cash On Delivery</label>
+                                    <div class="check"></div>
+                                </div>
+                            </div>
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option6" name="Payment_method" value="ONLINE">
+                                    <label for="f-option6">Razorpay </label>
+                                    <img src="/user/img/product/card.jpg" alt="">
+                                    <div class="check"></div>
+                                </div>
+
+                            </div>
+
+                            <button class="primary-btn" type="submit">Confirm </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+        <div class="row">
+            {{#each userData.Addresses}}
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.Name}}</h5>
+                        <p class="card-subtitle mb-2 text-muted">{{this.Phone}}</p>
+                        <p class="card-text">{{this.Building_Name}},{{this.Street_Name}}<br>{{this.City}},{{this.Pincode}}</p>
+                        <button onclick="showAddress('{{../userData._id}}','{{this._addId}}')"
+                            class="card-link btn btn-primary">Select</button>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+
+</section>
+<!--================End Checkout Area =================-->
+
+<!-- start footer Area -->
+<footer class="footer-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>About Us</h6>
+                    <p>
+                      	perfumes Duty free shop is a perfume retailer with 6 stores all over India, selling all
+							majot designer perfume brands,classic perfumes and celebrity perfumes,with unbeatable
+							experience at wholesale prices
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Newsletter</h6>
+                    <p>Stay update with our latest</p>
+                    <div class="" id="mc_embed_signup">
+
+                        <form target="_blank" novalidate="true"
+                            action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                            method="get" class="form-inline">
+
+                            <div class="d-flex flex-row">
+
+                                <input class="form-control" name="EMAIL" placeholder="Enter Email"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+                                    required="" type="email">
+
+
+                                <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right"
+                                        aria-hidden="true"></i></button>
+                                <div style="position: absolute; left: -5000px;">
+                                    <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
+                                        type="text">
+                                </div>
+
+                                <!-- <div class="col-lg-4 col-md-4">
+													<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+												</div>  -->
+                            </div>
+                            <div class="info"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget mail-chimp">
+                    <h6 class="mb-20">Instragram Feed</h6>
+                    <ul class="instafeed d-flex flex-wrap">
+                        <li><img src="img/i1.jpg" alt=""></li>
+                        <li><img src="img/i2.jpg" alt=""></li>
+                        <li><img src="img/i3.jpg" alt=""></li>
+                        <li><img src="img/i4.jpg" alt=""></li>
+                        <li><img src="img/i5.jpg" alt=""></li>
+                        <li><img src="img/i6.jpg" alt=""></li>
+                        <li><img src="img/i7.jpg" alt=""></li>
+                        <li><img src="img/i8.jpg" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Follow Us</h6>
+                    <p>Let us be social</p>
+                    <div class="footer-social d-flex align-items-center">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-dribbble"></i></a>
+                        <a href="#"><i class="fa fa-behance"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+            <p class="footer-text m-0">
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
+                with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                    target="_blank">Colorlib</a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+        </div>
+    </div>
+</footer>
+<!-- End footer Area -->
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<script>
+
+    function showAddress(userId, addId) {
+        $.ajax({
+            url: '/get-edit-address',
+            data: {
+                userId: userId,
+                addressId: addId
+            },
+            method: 'post',
+            success: (response) => {
+                console.log(response)
+                if (response) {
+                    document.getElementById('AddrName').value = response.Addresses.Name;
+                    document.getElementById('AddrPhone').value = response.Addresses.Phone;
+                    document.getElementById('AddrBuidlingName').value = response.Addresses.Building_Name;
+                    document.getElementById('AddrStreetName').value = response.Addresses.Street_Name;
+                    document.getElementById('AddrCity').value = response.Addresses.City;
+                    document.getElementById('AddrDistrict').value = response.Addresses.District;
+                    document.getElementById('AddrState').value = response.Addresses.State;
+                    document.getElementById('AddrPincode').value = response.Addresses.Pincode;
+
+                } else {
+                    alert("No response")
+                }
+            }
+
+        })
+    }
+
+    $('#checkout-form').submit((e) => {
+        console.log("Submission check")
+        e.preventDefault()
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+                console.log(response, "hlooo poda")
+                if (response.codSuccess) {
+                    alert('Order Confirmed')
+                    location.replace('/order-success')
+                } else {
+                    razorpayPayment(response)
+                }
+
+
+            }
+        })
+    })
+
+    function razorpayPayment(order) {
+        var options = {
+            "key": "rzp_test_nWmX6t3uTvbaiW",
+            "amount": order.amount,
+            "currency": "INR",
+            "name": "Nihal",
+            "description": "A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami",
+            "image": "https://example.com/your_logo.jpg",
+            "order_id": order.id,
+            "handler": function (response) {
+
+                verifyPayment(response, order)
+            },
+            "prefill": {
+                "name": "Nihal Muhammed",
+                "email": "nihal@gmail.com",
+                "contact": "7089562341"
+            },
+            "notes": {
+                "address": "Pristine Perfumerie	 Corporate Office"
+            },
+            "theme": {
+                "color": "#F37254"
+            }
+        };
+        var rzpl = new Razorpay(options)
+        rzpl.open();
+    }
+
+    function verifyPayment(payment, order) {
+        $.ajax({
+            url: '/verify-payment',
+            data: {
+                payment,
+                order
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    location.href = '/order-success'
+                } else {
+                    alert("payment failed")
+                }
+            }
+        })
+    }
+
+    function applyCoupon() {
+        var userId = document.getElementById('hiddenUserId').value
+        var coupon = document.getElementById('coupon').value
+        var subTotal = document.getElementById('subTotal').innerHTML
+        console.log(subTotal)
+        console.log(coupon)
+        $.ajax({
+            url: '/apply-coupon',
+            data: {
+                couponName: coupon,
+                userId: userId
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.expired) {
+                    alert("Sorry coupon have expired")
+                } else if (response.notAvailable) {
+                    alert("Invalid coupon")
+                } else if (response.used) {
+                    alert("Coupon already used")
+                } else {
+                    console.log(response, "prrrrrrrr")
+                    var discount = response.Value
+                    var grandTotal = subTotal - discount
+                    console.log(discount, grandTotal, "hahahahahaha")
+                    document.getElementById('discount').innerHTML = discount
+                    document.getElementById('grandTotal').innerHTML = grandTotal
+                    document.getElementById('offer').value = discount
+                    document.getElementById('finalprice').value = grandTotal
+                }
+            }
+        })
+
+    }
+</script>
