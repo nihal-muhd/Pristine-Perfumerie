@@ -106,7 +106,6 @@ module.exports = {
             var imgDel = productHelpers.deleteProduct(proId)
             console.log(imgDel);
             if (imgDel) {
-                console.log(imgDel.length);
                 for (i = 0; i < imgDel.length; i++) {
                     var imagePath = path.join(__dirname, '../public/admin/product-Images/' + imgDel[i])
                     fs.unlink(imagePath, (err) => {
@@ -264,7 +263,6 @@ module.exports = {
     coupon: async (req, res, next) => {
         try {
             let coupons = await adminHelpers.getCoupons()
-            console.log(coupons);
             res.render('admin/admin-Coupon', { layout: 'admin-layout', admin: true, coupons })
         } catch (error) {
             console.log(error);
