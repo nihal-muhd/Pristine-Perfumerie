@@ -259,7 +259,6 @@
             method: 'post',
             data: $('#checkout-form').serialize(),
             success: (response) => {
-                console.log(response, "hlooo poda")
                 if (response.codSuccess) {
                     alert('Order Confirmed')
                     location.replace('/order-success')
@@ -278,7 +277,7 @@
             "amount": order.amount,
             "currency": "INR",
             "name": "Nihal",
-            "description": "A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami",
+            "description": "Have a nice day",
             "image": "https://example.com/your_logo.jpg",
             "order_id": order.id,
             "handler": function (response) {
@@ -294,7 +293,7 @@
                 "address": "Pristine Perfumerie	 Corporate Office"
             },
             "theme": {
-                "color": "#F37254"
+                "color": "#000000"
             }
         };
         var rzpl = new Razorpay(options)
@@ -323,8 +322,6 @@
         var userId = document.getElementById('hiddenUserId').value
         var coupon = document.getElementById('coupon').value
         var subTotal = document.getElementById('subTotal').innerHTML
-        console.log(subTotal)
-        console.log(coupon)
         $.ajax({
             url: '/apply-coupon',
             data: {
@@ -340,10 +337,8 @@
                 } else if (response.used) {
                     alert("Coupon already used")
                 } else {
-                    console.log(response, "prrrrrrrr")
                     var discount = response.Value
                     var grandTotal = subTotal - discount
-                    console.log(discount, grandTotal, "hahahahahaha")
                     document.getElementById('discount').innerHTML = discount
                     document.getElementById('grandTotal').innerHTML = grandTotal
                     document.getElementById('offer').value = discount

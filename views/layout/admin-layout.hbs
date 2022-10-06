@@ -138,44 +138,62 @@
     <script>
         jQuery(document).ready(function ($) {
             "use strict";
+            function ordersCount() {
 
+                $.ajax({
+                    url: '/admin/orders-count',
+                    method: 'post',
+                    success: (response) => {
+                        console.log(response, "hhahahha")
+                        var piedata = [
+
+                            { label: response[0].paymentMethod, data: [[1, response[0].count]], color: '#000000' },
+                            { label: response[1].paymentMethod, data: [[1, response[1].count]], color: '#999999' },
+
+
+
+
+                            // { label: "Mobile visits", data: [[1, 35]], color: '#66bb6a' }
+
+
+                        ];
+
+                        $.plot('#flotPie1', piedata, {
+                            series: {
+                                pie: {
+                                    show: true,
+                                    radius: 1,
+                                    innerRadius: 0.65,
+                                    label: {
+                                        show: true,
+                                        radius: 2 / 3,
+                                        threshold: 1
+                                    },
+                                    stroke: {
+                                        width: 0
+                                    }
+                                }
+                            },
+                            grid: {
+                                hoverable: true,
+                                clickable: true
+                            }
+                        });
+                    }
+                })
+
+            }
+            ordersCount()
             // Pie chart flotPie1
-            var piedata = [
-                { label: "Desktop visits", data: [[1, 32]], color: '#5c6bc0' },
-                { label: "Tab visits", data: [[1, 33]], color: '#ef5350' },
-                { label: "Mobile visits", data: [[1, 35]], color: '#66bb6a' }
-                
-            ];
 
-           // $.plot('#flotPie1', piedata, {
-            //    series: {
-              //      pie: {
-                //        show: true,
-                  //      radius: 1,
-                    //    innerRadius: 0.65,
-                      //  label: {
-                        //    show: true,
-                          //  radius: 2 / 3,
-                          //  threshold: 1
-                       // },
-                       // stroke: {
-                         //   width: 0
-                       // }
-                   // }
-               // },
-              //  grid: {
-                //    hoverable: true,
-                  //  clickable: true
-               // }
-           // });
             // Pie chart flotPie1  End
             // cellPaiChart
-           
+
             // cellPaiChart End
             // Line Chart  #flotLine5
             var newCust = [[0, 3], [1, 5], [2, 4], [3, 7], [4, 9], [5, 3], [6, 6], [7, 4], [8, 10]];
 
-           
+
             // Line Chart  #flotLine5 End
             // Traffic Chart using chartist
             function totalRevenue() {
@@ -270,7 +288,7 @@
             }
             //Traffic chart chart-js  End
             // Bar Chart #flotBarChart
-          
+
         });
     </script>
 </body>

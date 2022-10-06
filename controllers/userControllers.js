@@ -407,7 +407,7 @@ module.exports = {
             if (req.session.user) {
                 cartCount = await cartHelpers.getCartCount(userDetails._id)
             }
-            res.render('user/user-OrderSucess', { userDetails, cartCount })
+            res.render('user/user-OrderSucess', {user:true, userDetails, cartCount })
         } catch (error) {
             console.log(error);
             next(error)
@@ -418,8 +418,6 @@ module.exports = {
             userDetails = req.session.user
             let orders = await userHelpers.getUserOrder(req.session.user._id)
 
-            let date = orders.date
-            console.log(date, "bulul")
             if (req.session.user) {
                 cartCount = await cartHelpers.getCartCount(userDetails._id)
             }
@@ -431,11 +429,12 @@ module.exports = {
     },
     viewOrderedProduct: async (req, res, next) => {
         try {
+            userDetails = req.session.user
             let products = await userHelpers.getOrderProducts(req.params.id)
             if (req.session.user) {
                 cartCount = await cartHelpers.getCartCount(userDetails._id)
             }
-            res.render('user/user-OrderedProduct', { user: true, products, cartCount })
+            res.render('user/user-OrderedProduct', { user: true, products, cartCount,userDetails })
         } catch (error) {
             console.log(error);
             next(error)
@@ -487,7 +486,7 @@ module.exports = {
             if (req.session.user) {
                 cartCount = await cartHelpers.getCartCount(userDetails._id)
             }
-            res.render('user/user-Contact', { user: true })
+            res.render('user/user-Contact', { user: true, userDetails, cartCount })
         } catch (error) {
             console.log(error);
             next(error)

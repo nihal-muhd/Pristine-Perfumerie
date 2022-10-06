@@ -2,6 +2,7 @@ var express = require('express');
 const { response, } = require('../app');
 var router = express.Router();
 const adminController = require('../controllers/adminControllers')
+const adminHelpers = require('../helpers/admin-helpers');
 const multer = require('multer')
 
 
@@ -65,6 +66,11 @@ router.post('/change-delivery-status', verifyAdmin, adminController.postDelivery
 router.get('/coupon', verifyAdmin, adminController.coupon)
 router.post('/coupon', verifyAdmin, adminController.postCoupon)
 router.get('/delete-coupon/:id', verifyAdmin, adminController.deleteCoupon)
+
+router.post('/orders-count', async (req, res) => {
+  let response = await adminHelpers.ordersCount()
+  res.json(response)
+})
 
 /* For Logout */
 router.get('/logout', adminController.logout)

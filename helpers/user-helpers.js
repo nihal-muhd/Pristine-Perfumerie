@@ -351,7 +351,17 @@ module.exports = {
     getUserOrder: (userId) => {
         return new Promise(async (resolve, reject) => {
             try {
-                let orders = await db.get().collection(collection.ORDER_COLLECTION).find({ userId: objectId(userId) }).sort({ _id: -1 }).toArray()
+                let orders = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: { userId: objectId(userId) }
+                    },
+                    {
+                        
+                        $project:{
+                            deliveryDetails:1,userId:1,paymentMethod:1,products:1,totalAmount:1,discount:1,grandTotal:1,status:1,date: { $dateToString: { format: "%d-%m-%Y", date: "$date" } }
+                        }
+                    }
+                ]).sort({date:-1}).toArray()
                 resolve(orders)
             } catch (error) {
                 reject(error)

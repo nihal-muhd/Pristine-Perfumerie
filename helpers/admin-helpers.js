@@ -98,7 +98,14 @@ module.exports = {
     getAllOrders: () => {
         return new Promise(async (resolve, reject) => {
             try {
-                let orders = await db.get().collection(collection.ORDER_COLLECTION).find().toArray()
+                let orders = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+
+                        $project: {
+                            deliveryDetails: 1, userId: 1, paymentMethod: 1, products: 1, totalAmount: 1, discount: 1, grandTotal: 1, status: 1, date: { $dateToString: { format: "%d-%m-%Y", date: "$date" } }
+                        }
+                    }
+                ]).sort({ date: -1 }).toArray()
                 resolve(orders)
             } catch (error) {
                 reject(error)
@@ -225,7 +232,6 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let today = new Date()
             let before = new Date(new Date().getTime() - (250 * 24 * 60 * 60 * 1000))
-            console.log(today, before, "gagagaggagagag")
             let revenue = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
                     $match: {
@@ -256,7 +262,6 @@ module.exports = {
                     }
                 }
             ]).sort({ date: 1 }).toArray()
-            console.log(revenue, "blablbalb")
             let obj = {
                 date: [], cod: [0, 0, 0, 0, 0, 0, 0, 0], online: [0, 0, 0, 0, 0, 0, 0, 0]
             }
@@ -275,6 +280,40 @@ module.exports = {
                 obj.date[i] = month[a + i - 1]
             }
             resolve(obj)
+        })
+    },
+    ordersCount: () => {
+        return new Promise(async (resolve, reject) => {
+            let count = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: { "status": 'delivered' }
+                },
+                {
+                    $group: {
+                        _id: '$paymentMethod', count: { $sum: 1 }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        paymentMethod: '$_id',
+                        count: '$count'
+                    }
+
+                },
+                {
+                    $sort:{paymentMethod:1}
+                }
+            ]).toArray()
+          
+            // let obj = {
+            //     method: [], count: []
+            // }
+            // for (let i = 0; i < 2; i++) {
+            //     obj.method.push(count[i].paymentMethod)
+            //     obj.count.push(count[i].count)
+            // }
+            resolve(count)
         })
     }
 
