@@ -417,7 +417,6 @@ module.exports = {
         try {
             userDetails = req.session.user
             let orders = await userHelpers.getUserOrder(req.session.user._id)
-
             if (req.session.user) {
                 cartCount = await cartHelpers.getCartCount(userDetails._id)
             }

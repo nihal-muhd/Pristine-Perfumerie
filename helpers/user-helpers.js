@@ -361,7 +361,8 @@ module.exports = {
                     {
 
                         $project: {
-                            deliveryDetails: 1, userId: 1, paymentMethod: 1, products: 1, totalAmount: 1, discount: 1, grandTotal: 1, status: 1, date: { $dateToString: { format: "%d-%m-%Y", date: "$date" } }
+                            deliveryDetails: 1, userId: 1, paymentMethod: 1, products: 1, totalAmount: 1, discount: 1, grandTotal: 1, status: 1, date: { $dateToString: { format: "%d-%m-%Y", date: "$date" } },
+                            cancelStatus:1,deliveryStatus:1,returnStatus:1
                         }
                     }
                 ]).sort({ date: -1 }).toArray()
