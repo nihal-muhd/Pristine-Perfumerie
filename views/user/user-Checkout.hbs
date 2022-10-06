@@ -1,4 +1,3 @@
-
 <!--================Checkout Area =================-->
 <section class="checkout_area section_gap" style="margin-top: 5rem ;">
     <div class="container">
@@ -19,42 +18,44 @@
 
                         <div class="col-md-6 form-group p_star">
                             <input type="text" class="form-control" id="AddrName" name="Name" placeholder="Name"
-                                value="" required>
+                                value="" onkeyup="validateName()">
+                            <span id="AddrName-error" class="text-danger font-weight-bold"></span>
 
                         </div>
                         <div class="col-md-6 form-group p_star">
                             <input type="number" class="form-control" id="AddrPhone" name="Phone"
-                                placeholder="Phone Number" required>
-
+                                placeholder="Phone Number" onkeyup="validatePhone()">
+                            <span id="AddrPhone-error" class="text-danger font-weight-bold"></span>
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control" id="AddrBuidlingName" name="Buidling_Name"
-                                placeholder="Buidling Name" required>
-
+                                placeholder="Buidling Name" onkeyup="validateBuidling_Name()">
+                            <span id="AddrBuidlingName-error" class="text-danger font-weight-bold"></span>
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control" id="AddrStreetName" name="Street_Name"
-                                placeholder="Street Name" required>
-
+                                placeholder="Street Name" onkeyup="validateStreet_Name()">
+                            <span id="AddrStreetName-error" class="text-danger font-weight-bold"></span>
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control" id="AddrCity" name="City" placeholder="City"
-                                required>
-
+                                onkeyup="validatCity()">
+                            <span id="AddrCity-error" class="text-danger font-weight-bold"></span>
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control" id="AddrDistrict" name="District"
-                                placeholder="District" required>
-
+                                placeholder="District" onkeyup="validateDistrict()">
+                            <span id="AddrDistrict-error" class="text-danger font-weight-bold"></span>
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control" id="AddrState" name="State" placeholder="State"
-                                required>
-
+                                onkeyup="validateState()">
+                            <span id="AddrState-error" class="text-danger font-weight-bold"></span>
                         </div>
                         <div class="col-md-12 form-group">
                             <input type="number" class="form-control" id="AddrPincode" name="Pincode"
-                                placeholder="Pincode" required>
+                                placeholder="Pincode" onkeyup="validatePincode()">
+                            <span id="AddrPincode-error" class="text-danger font-weight-bold"></span>
                         </div>
 
                         <input type="text" name="userId" id="hiddenUserId" value="{{userDetails._id}}" hidden>
@@ -100,12 +101,13 @@
 
                             </div>
 
-                            <button class="primary-btn" type="submit">Confirm </button>
+                            <button class="primary-btn" type="submit" onclick="return validateForm()">Confirm </button>
+                            <span id="submit-error" class="text-danger font-weight-bold"></span>
                         </div>
                     </div>
                 </div>
             </form>
-            
+
         </div>
         <div class="row">
             {{#each userData.Addresses}}
@@ -114,7 +116,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{this.Name}}</h5>
                         <p class="card-subtitle mb-2 text-muted">{{this.Phone}}</p>
-                        <p class="card-text">{{this.Building_Name}},{{this.Street_Name}}<br>{{this.City}},{{this.Pincode}}</p>
+                        <p class="card-text">
+                            {{this.Building_Name}},{{this.Street_Name}}<br>{{this.City}},{{this.Pincode}}</p>
                         <button onclick="showAddress('{{../userData._id}}','{{this._addId}}')"
                             class="card-link btn btn-primary">Select</button>
                     </div>
@@ -136,9 +139,9 @@
                 <div class="single-footer-widget">
                     <h6>About Us</h6>
                     <p>
-                      	perfumes Duty free shop is a perfume retailer with 6 stores all over India, selling all
-							majot designer perfume brands,classic perfumes and celebrity perfumes,with unbeatable
-							experience at wholesale prices
+                        perfumes Duty free shop is a perfume retailer with 6 stores all over India, selling all
+                        majot designer perfume brands,classic perfumes and celebrity perfumes,with unbeatable
+                        experience at wholesale prices
                     </p>
                 </div>
             </div>
@@ -347,5 +350,176 @@
             }
         })
 
+    }
+
+    var nameError = document.getElementById('AddrName-error');
+    var phoneError = document.getElementById('AddrPhone-error');
+    var buildingError = document.getElementById('AddrBuidlingName-error');
+    var streetError = document.getElementById('AddrStreetName-error');
+    var cityError = document.getElementById('AddrCity-error');
+    var districtError = document.getElementById('AddrDistrict-error');
+    var stateError = document.getElementById('AddrState-error');
+    var pinError = document.getElementById('AddrPincode-error');
+    var submitError = document.getElementById('submit-error');
+
+    function validateName() {
+        var name = document.getElementById('AddrName').value;
+
+        if (name.length == 0) {
+            nameError.innerHTML = '**Name is required';
+            return false
+        }
+        if (!name.match(/^[A-Za-z]*\s{1}[A-Za-z]*$/)) {
+            nameError.innerHTML = '**write full name';
+            return false;
+        }
+        if ((name.length <= 2) || (name.length > 25)) {
+            nameError.innerHTML = '**Name length must be between 3 and 25';
+            return false
+        }
+        nameError.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i>';
+        return true
+    }
+
+    function validatePhone() {
+        var phone = document.getElementById('AddrPhone').value;
+
+        if (phone.length == 0) {
+            phoneError.innerHTML = '**mobile number is required';
+            return false
+        }
+        if (phone.length != 10) {
+            phoneError.innerHTML = '**mobile number should be 10 digits';
+            return false
+        }
+        if (!phone.match(/^[0-9]{10}$/)) {
+            phoneError.innerHTML = '**Only digits please';
+            return false
+        }
+        phoneError.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i>';
+        return true
+    }
+
+    function validateBuidling_Name() {
+        var building = document.getElementById('AddrBuidlingName').value;
+
+        if (building.length == 0) {
+            buildingError.innerHTML = '**Building name is required';
+            return false
+        }
+        if (!building.match(/^[A-Za-z]*$/)) {
+            buildingError.innerHTML = '**Only alphabets';
+            return false;
+        }
+        if ((building.length <= 2) || (building.length > 25)) {
+            buildingError.innerHTML = '**Building name length must be between 3 and 25';
+            return false
+        }
+        buildingError.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i>';
+        return true
+    }
+
+    function validateStreet_Name() {
+        var street = document.getElementById('AddrStreetName').value;
+
+        if (street.length == 0) {
+            streetError.innerHTML = '**street name is required';
+            return false
+        }
+        if (!street.match(/^[A-Za-z]*$/)) {
+            streetError.innerHTML = '**Only alphabets';
+            return false;
+        }
+        if ((street.length <= 2) || (street.length > 25)) {
+            streetError.innerHTML = '**street name length must be between 3 and 25';
+            return false
+        }
+        streetError.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i>';
+        return true
+    }
+
+    function validatCity() {
+        var city = document.getElementById('AddrCity').value;
+
+        if (city.length == 0) {
+            cityError.innerHTML = '**city name is required';
+            return false
+        }
+        if (!city.match(/^[A-Za-z]*$/)) {
+            cityError.innerHTML = '**Only alphabets';
+            return false;
+        }
+        if ((city.length <= 2) || (city.length > 25)) {
+            cityError.innerHTML = '**city name length must be between 3 and 25';
+            return false
+        }
+        cityError.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i>';
+        return true
+    }
+
+    function validateDistrict() {
+        var district = document.getElementById('AddrDistrict').value;
+
+        if (district.length == 0) {
+            districtError.innerHTML = '**district name is required';
+            return false
+        }
+        if (!district.match(/^[A-Za-z]*$/)) {
+            districtError.innerHTML = '**Only alphabets';
+            return false;
+        }
+        if ((district.length <= 2) || (district.length > 25)) {
+            districtError.innerHTML = '**district name length must be between 3 and 25';
+            return false
+        }
+        districtError.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i>';
+        return true
+    }
+
+    function validateState() {
+        var state = document.getElementById('AddrState').value;
+
+        if (state.length == 0) {
+            stateError.innerHTML = '**state name is required';
+            return false
+        }
+        if (!state.match(/^[A-Za-z]*$/)) {
+            stateError.innerHTML = '**Only alphabets';
+            return false;
+        }
+        if ((state.length <= 2) || (state.length > 25)) {
+            stateError.innerHTML = '**state name length must be between 3 and 25';
+            return false
+        }
+        stateError.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i>';
+        return true
+    }
+
+    function validatePincode() {
+        var pincode = document.getElementById('AddrPincode').value;
+
+        if (pincode.length == 0) {
+            pinError.innerHTML = '**pincode is required';
+            return false
+        }
+        if (pincode.length != 6) {
+            pinError.innerHTML = '**pincode  should be 6 digits';
+            return false
+        }
+        if (!pincode.match(/^[0-9]{6}$/)) {
+            pinError.innerHTML = '**Only digits please';
+            return false
+        }
+        pinError.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i>';
+        return true
+    }
+
+    function validateForm() {
+        if (!validateName() || !validatePhone() || !validateBuidling_Name() || !validateStreet_Name() || !validatCity() || !validateDistrict() || !validateState() || !validatePincode()) {
+            submitError.style.display = 'block'
+            submitError.innerHTML = 'Please fill the form';
+            setTimeout(function () { submitError.style.display = 'none' }, 3000)
+            return false;
+        }
     }
 </script>
