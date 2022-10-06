@@ -230,90 +230,92 @@ module.exports = {
     },
     getTotalRevenue: () => {
         return new Promise(async (resolve, reject) => {
-            let today = new Date()
-            let before = new Date(new Date().getTime() - (250 * 24 * 60 * 60 * 1000))
-            let revenue = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                {
-                    $match: {
-                        status: 'delivered',
-                        date: {
-                            $gte: before,
-                            $lte: today
+            try {
+                let today = new Date()
+                let before = new Date(new Date().getTime() - (250 * 24 * 60 * 60 * 1000))
+                let revenue = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: {
+                            status: 'delivered',
+                            date: {
+                                $gte: before,
+                                $lte: today
+                            }
+                        }
+                    },
+                    {
+                        $project: {
+                            paymentMethod: 1, grandTotal: 1, date: 1
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: { date: { $dateToString: { format: "%m-%Y", date: "$date" } }, paymentMethod: '$paymentMethod' },
+                            Amount: { $sum: '$grandTotal' }
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            date: '$_id.date',
+                            paymentMethod: '$_id.paymentMethod',
+                            amount: '$Amount',
                         }
                     }
-                },
-                {
-                    $project: {
-                        paymentMethod: 1, grandTotal: 1, date: 1
-                    }
-                },
-                {
-                    $group: {
-                        _id: { date: { $dateToString: { format: "%m-%Y", date: "$date" } }, paymentMethod: '$paymentMethod' },
-                        Amount: { $sum: '$grandTotal' }
-                    }
-                },
-                {
-                    $project: {
-                        _id: 0,
-                        date: '$_id.date',
-                        paymentMethod: '$_id.paymentMethod',
-                        amount: '$Amount',
-                    }
+                ]).sort({ date: 1 }).toArray()
+                let obj = {
+                    date: [], cod: [0, 0, 0, 0, 0, 0, 0, 0], online: [0, 0, 0, 0, 0, 0, 0, 0]
                 }
-            ]).sort({ date: 1 }).toArray()
-            let obj = {
-                date: [], cod: [0, 0, 0, 0, 0, 0, 0, 0], online: [0, 0, 0, 0, 0, 0, 0, 0]
-            }
-            let month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            let a = today.getMonth() - 6
-            for (let i = 0; i < 8; i++) {
-                for (let k = 0; k < revenue.length; k++) {
-                    if (Number(revenue[k].date.slice(0, 2)) == Number(a + i)) {
-                        if (revenue[k].paymentMethod == 'ONLINE') {
-                            obj.online[i] = revenue[k].amount
-                        } else {
-                            obj.cod[i] = revenue[k].amount
+                let month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                let a = today.getMonth() - 6
+                for (let i = 0; i < 8; i++) {
+                    for (let k = 0; k < revenue.length; k++) {
+                        if (Number(revenue[k].date.slice(0, 2)) == Number(a + i)) {
+                            if (revenue[k].paymentMethod == 'ONLINE') {
+                                obj.online[i] = revenue[k].amount
+                            } else {
+                                obj.cod[i] = revenue[k].amount
+                            }
                         }
                     }
+                    obj.date[i] = month[a + i - 1]
                 }
-                obj.date[i] = month[a + i - 1]
+                resolve(obj)
+            } catch (error) {
+                reject(error)
             }
-            resolve(obj)
+
         })
     },
     ordersCount: () => {
         return new Promise(async (resolve, reject) => {
-            let count = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                {
-                    $match: { "status": 'delivered' }
-                },
-                {
-                    $group: {
-                        _id: '$paymentMethod', count: { $sum: 1 }
-                    }
-                },
-                {
-                    $project: {
-                        _id: 0,
-                        paymentMethod: '$_id',
-                        count: '$count'
-                    }
+            try {
+                let count = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: { "status": 'delivered' }
+                    },
+                    {
+                        $group: {
+                            _id: '$paymentMethod', count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            paymentMethod: '$_id',
+                            count: '$count'
+                        }
 
-                },
-                {
-                    $sort:{paymentMethod:1}
-                }
-            ]).toArray()
-          
-            // let obj = {
-            //     method: [], count: []
-            // }
-            // for (let i = 0; i < 2; i++) {
-            //     obj.method.push(count[i].paymentMethod)
-            //     obj.count.push(count[i].count)
-            // }
-            resolve(count)
+                    },
+                    {
+                        $sort: { paymentMethod: 1 }
+                    }
+                ]).toArray()
+                resolve(count)
+            } catch (error) {
+                reject(error)
+            }
+
         })
     }
 

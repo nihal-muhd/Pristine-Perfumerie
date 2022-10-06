@@ -33,7 +33,10 @@ router.post('/login', adminController.adminPostLogin)
 
 /* For Home-Page  */
 router.get('/', verifyAdmin, adminController.adminHomePage)
+
+/* For Graph */
 router.post('/total-revenue', adminController.TotalRevenueGraph)
+router.post('/orders-count', adminController.orderCount)
 
 /* For Product */
 router.get('/add-product', verifyAdmin, adminController.adminAddProduct)
@@ -67,10 +70,7 @@ router.get('/coupon', verifyAdmin, adminController.coupon)
 router.post('/coupon', verifyAdmin, adminController.postCoupon)
 router.get('/delete-coupon/:id', verifyAdmin, adminController.deleteCoupon)
 
-router.post('/orders-count', async (req, res) => {
-  let response = await adminHelpers.ordersCount()
-  res.json(response)
-})
+
 
 /* For Logout */
 router.get('/logout', adminController.logout)

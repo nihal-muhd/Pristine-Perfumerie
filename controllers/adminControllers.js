@@ -48,10 +48,24 @@ module.exports = {
         }
 
     },
-    TotalRevenueGraph: (req, res) => {
-        adminHelpers.getTotalRevenue().then((response) => {
+    TotalRevenueGraph: async (req, res) => {
+        try {
+            let response = await adminHelpers.getTotalRevenue()
             res.json(response)
-        })
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+
+    },
+    orderCount: async (req, res) => {
+        try {
+            let response = await adminHelpers.ordersCount()
+            res.json(response)
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
     },
     adminAddProduct: async (req, res, next) => {
         try {
@@ -306,9 +320,5 @@ module.exports = {
         }
 
     }
-
-
-
-
 
 }

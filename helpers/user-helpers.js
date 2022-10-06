@@ -221,28 +221,31 @@ module.exports = {
             item: objectId(proId)
         }
         return new Promise(async (resolve, reject) => {
-            let user = await db.get().collection(collection.WISHLIST_COLLECTION).findOne({ user: objectId(userId) })
-            if (user) {
-                let proExist = user.products.findIndex(product => product.item == proId)
-                console.log(proExist, "bbaaa");
-                if (proExist != -1) {
-                    resolve({ Exist: true })
-                } else {
-                    db.get().collection(collection.WISHLIST_COLLECTION).updateOne({ user: objectId(userId) }, {
-                        $push: { products: productObj }
-                    }).then(() => {
+            try {
+                let user = await db.get().collection(collection.WISHLIST_COLLECTION).findOne({ user: objectId(userId) })
+                if (user) {
+                    let proExist = user.products.findIndex(product => product.item == proId)
+                    if (proExist != -1) {
+                        resolve({ Exist: true })
+                    } else {
+                        await db.get().collection(collection.WISHLIST_COLLECTION).updateOne({ user: objectId(userId) }, {
+                            $push: { products: productObj }
+                        })
                         resolve({ status: true })
-                    })
-                }
-            } else {
-                wishObj = {
-                    user: objectId(userId),
-                    products: [productObj]
-                }
-                db.get().collection(collection.WISHLIST_COLLECTION).insertOne(wishObj).then((response) => {
+
+                    }
+                } else {
+                    wishObj = {
+                        user: objectId(userId),
+                        products: [productObj]
+                    }
+                    await db.get().collection(collection.WISHLIST_COLLECTION).insertOne(wishObj)
                     resolve({ status: true })
-                })
+                }
+            } catch (error) {
+                reject(error)
             }
+
         })
     },
     getWishlistProducts: (userId) => {
@@ -356,12 +359,12 @@ module.exports = {
                         $match: { userId: objectId(userId) }
                     },
                     {
-                        
-                        $project:{
-                            deliveryDetails:1,userId:1,paymentMethod:1,products:1,totalAmount:1,discount:1,grandTotal:1,status:1,date: { $dateToString: { format: "%d-%m-%Y", date: "$date" } }
+
+                        $project: {
+                            deliveryDetails: 1, userId: 1, paymentMethod: 1, products: 1, totalAmount: 1, discount: 1, grandTotal: 1, status: 1, date: { $dateToString: { format: "%d-%m-%Y", date: "$date" } }
                         }
                     }
-                ]).sort({date:-1}).toArray()
+                ]).sort({ date: -1 }).toArray()
                 resolve(orders)
             } catch (error) {
                 reject(error)
@@ -423,14 +426,13 @@ module.exports = {
         })
     },
     changeProductStatus: (orderId) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
                 $set: {
                     status: 'placed'
                 }
-            }).then(() => {
-                resolve()
             })
+            resolve()
         })
     },
     applyCoupon: (couponName, userId) => {
@@ -461,9 +463,9 @@ module.exports = {
         })
     },
     cancelOrder: (orderId) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
-                db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
+                await db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
                     $set: {
                         status: 'cancelled',
                         cancelStatus: true
@@ -476,9 +478,9 @@ module.exports = {
         })
     },
     returnOrder: (orderId) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
-                db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
+                await db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
                     $set: {
                         status: 'returned',
                         returnStatus: true,
