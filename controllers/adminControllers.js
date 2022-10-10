@@ -5,6 +5,11 @@ const categoryHelpers = require('../helpers/category-helpers')
 const fs = require('fs')
 const path = require('path');
 
+let adminlogin = {
+    username: process.env.ADMIN_USERNAME,
+    password: process.env.ADMIN_PASSWORD
+}
+
 module.exports = {
     adminLogin: (req, res, next) => {
         try {
@@ -21,11 +26,15 @@ module.exports = {
     },
     adminPostLogin: async (req, res, next) => {
         try {
-            var response = await adminHelpers.adminLogin(req.body)
-            if (response.status) {
-                req.session.adminLoggedIn = true
-                req.session.admin = response.admin
-                res.redirect('/admin')
+            let data = req.body
+            if (data.Username == adminlogin.username) {
+                if (data.Password == adminlogin.password) {
+                    req.session.adminLoggedIn = true
+                    req.session.admin = data
+                    res.redirect('/admin')
+                } else {
+                    res.redirect('/admin/login')
+                }
             } else {
                 res.redirect('/admin/login')
             }
