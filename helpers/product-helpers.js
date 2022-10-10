@@ -8,6 +8,7 @@ module.exports = {
     addProduct: (product) => {
         return new Promise(async (resolve, reject) => {
             try {
+                product.Price=parseInt(product.Price)
                 let data = await db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product)
                 resolve(data.insertedId)
             } catch (error) {
